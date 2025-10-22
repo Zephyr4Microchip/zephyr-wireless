@@ -1,0 +1,15 @@
+## Validated Applications
+
+- [Broadcaster](https://docs.zephyrproject.org/latest/samples/bluetooth/broadcaster/README.html#bluetooth_broadcaster)
+- [Central / GATT Write](https://docs.zephyrproject.org/latest/samples/bluetooth/central_gatt_write/README.html#ble_central_gatt_write)
+- [Central Multilink](https://docs.zephyrproject.org/latest/samples/bluetooth/central_multilink/README.html#ble_central_multilink)
+- [Direct Advertising](https://docs.zephyrproject.org/latest/samples/bluetooth/direct_adv/README.html#ble_direct_adv)
+- [Extended Advertising](https://docs.zephyrproject.org/latest/samples/bluetooth/extended_adv/README.html#bluetooth_extended_advertising)
+- [HCI UART](https://docs.zephyrproject.org/latest/samples/bluetooth/hci_uart/README.html#bluetooth_hci_uart)
+- [HID Peripheral](https://docs.zephyrproject.org/latest/samples/bluetooth/peripheral_hids/README.html#ble_peripheral_hids)
+- [Multiple Broadcaster](https://docs.zephyrproject.org/latest/samples/bluetooth/broadcaster_multiple/README.html#bluetooth_broadcaster_multiple)
+- [Observer](https://docs.zephyrproject.org/latest/samples/bluetooth/observer/README.html#bluetooth_observer)
+- [Periodic Advertising](https://docs.zephyrproject.org/latest/samples/bluetooth/periodic_adv/README.html#ble_periodic_adv)
+- [Periodic Advertising Synchronization](https://docs.zephyrproject.org/latest/samples/bluetooth/periodic_sync/README.html#ble_periodic_adv_sync)
+- [Peripheral](https://docs.zephyrproject.org/latest/samples/bluetooth/peripheral/README.html#ble_peripheral)
+- [Peripheral Identity](https://docs.zephyrproject.org/latest/samples/bluetooth/peripheral_identity/README.html#ble_peripheral_identity)
