@@ -38,6 +38,7 @@ west build -p always -b wbz451_curiosity samples\basic\blinky
 ```
 ## 4. Getting Started with Applications<a name="step4">
 - [Bluetooth LE Applications](./docs/Bluetooth%20LE%20Applications.md)
+- [Open Thread Applications](./docs/Openthread_Sample_Applications.md)
 
 ## 5. Getting Started with OpenOCD<a name="step5">
 - Refer the [Getting Started with OpenOCD](./docs/Getting_Started_with_OpenOCD.pdf)
