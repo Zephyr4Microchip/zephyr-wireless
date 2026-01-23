@@ -17,6 +17,11 @@ Microchip Wireless Solutions repository to get started with Bluetooth Low Energy
 |[PIC32-BZ6 Early Access Curiosity Board](https://www.microchip.com/en-us/development-tool/ea81w68a) |pic32wm_bz6204_curiosity|
 
 ## 2. Environment Setup<a name="step2">
+
+### VS Code IDE (Recommended for Ease of Use)
+ - [Getting Started with VS Code + Workbench for Zephyr](./docs/Workbench_for_Zephyr.md)
+
+### Legacy Command Line
 - Setup the zephyr environment by following the [Getting Started Guide — Zephyr Project Documentation link](https://docs.zephyrproject.org/latest/develop/getting_started/index.html).
 - Instead of running west init to initialize a workspace based on the default manifest, use the following command.
 ```bash
@@ -42,4 +47,3 @@ west build -p always -b wbz451_curiosity samples\basic\blinky
 
 ## 5. Getting Started with OpenOCD<a name="step5">
 - Refer the [Getting Started with OpenOCD](./docs/Getting_Started_with_OpenOCD.pdf)
-
