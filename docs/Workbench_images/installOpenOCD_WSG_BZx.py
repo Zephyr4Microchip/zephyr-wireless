@@ -56,30 +56,41 @@ if __name__ == "__main__":
             # Try default location in user's home .zinstaller
             user_home = os.path.expanduser("~")
             zi_tools_dir = os.path.join(user_home, ".zinstaller", "tools")
-        
+
+        # New ZI layout: <tools>/openocds/openocd-zephyr
+        new_openocd_dest = os.path.join(zi_tools_dir, "openocds", "openocd-zephyr")
+        # Legacy layout (older releases): <tools>/openocd
+        legacy_openocd_dest = os.path.join(zi_tools_dir, "openocd")
+
         if os.path.exists(zi_tools_dir):
-            openocd_dest = os.path.join(zi_tools_dir, "openocd")
-            wbz451_cfg = os.path.join(openocd_dest, "share", "openocd", "scripts", "target", "wbz451.cfg")
-            
-            # Check if wbz451.cfg already exists
-            if os.path.exists(wbz451_cfg):
-                print(f"✓ wbz451.cfg already exists at {wbz451_cfg}, skipping overwrite")
+            if os.path.exists(new_openocd_dest) or os.path.isdir(os.path.join(zi_tools_dir, "openocds")):
+                openocd_dest = new_openocd_dest
+            elif os.path.exists(legacy_openocd_dest):
+                openocd_dest = legacy_openocd_dest
             else:
-                print(f"⚠ wbz451.cfg not found, overwriting openocd...")
-                openocd_src = dst2  # prebuilt_binaries/windows/openocd_support_wbz_pic32wm
-                
-                if os.path.exists(openocd_src):
-                    # Remove existing openocd folder if it exists
+                # Default to new layout when destination doesn't exist yet.
+                openocd_dest = new_openocd_dest
+
+            print(f"Using OpenOCD destination: {openocd_dest}")
+            openocd_src = dst2  # prebuilt_binaries/windows/openocd_support_wbz_pic32wm
+            wbz451_cfg = os.path.join(openocd_dest, "share", "openocd", "scripts", "target", "wbz451.cfg")
+
+            if os.path.exists(openocd_src):
+                # Keep gate check to avoid unnecessary overwrite.
+                if os.path.exists(wbz451_cfg):
+                    print(f"✓ wbz451.cfg already exists at {wbz451_cfg}, skipping overwrite")
+                else:
+                    print(f"⚠ wbz451.cfg not found, overwriting openocd...")
                     if os.path.exists(openocd_dest):
                         print(f"Removing existing openocd at {openocd_dest}...")
                         shutil.rmtree(openocd_dest)
-                    
-                    # Copy all contents
+
+                    os.makedirs(os.path.dirname(openocd_dest), exist_ok=True)
                     print(f"Copying {openocd_src} to {openocd_dest}...")
                     shutil.copytree(openocd_src, openocd_dest)
                     print(f"✓ Successfully overwritten openocd in {openocd_dest}")
-                else:
-                    print(f"⚠ Source openocd not found at {openocd_src}")
+            else:
+                print(f"⚠ Source openocd not found at {openocd_src}")
         else:
             print(f"⚠ zi_tools_dir not found at {zi_tools_dir}")
             print(f"  Set ZI_TOOLS_DIR environment variable or ensure .zinstaller exists")
