@@ -6,7 +6,7 @@ Procedure to build and run the openthread coprocessor application can also be fo
 
 1. To build openthread Radio Co Processor application, which is part of zephyr repo, use the below command,
 ```bash
-west build -p always -b wbz451_curiosity ./zephyr/samples/net/openthread/coprocessor/ -- -DCONF_FILE="prj.conf overlay-rcp.conf" -DDTC_OVERLAY_FILE="boards/wbz45x_curiosity.overlay" "-DOVERLAY_CONFIG=boards/wbz45x_curiosity.conf"
+west build -p always -b wbz451_curiosity ./zephyr/samples/net/openthread/coprocessor/ -- -DCONF_FILE="prj.conf overlay-rcp.conf"
 ```
 **Note:** Modify the board name as per the requirements
 2. The openthread Radio Co Processor application is built with default configuration as in [prj.cnf](https://github.com/zephyrproject-rtos/zephyr/blob/main/samples/net/openthread/coprocessor/prj.conf) file.
