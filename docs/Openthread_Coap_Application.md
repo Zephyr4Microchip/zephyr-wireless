@@ -6,7 +6,7 @@ Procedure to build and run the openthread coap application can also be found at 
 
 1. To build openthread coap server application, which is part of zephyr repo, use the below command,
 ```bash
-west build -p always -b wbz451_curiosity -T sample.net.openthread.ftd.coap.server ./zephyr/samples/net/openthread/coap/  "-DEXTRA_CONF_FILE=boards/wbz45x_curiosity.conf"
+west build -p always -b wbz451_curiosity -T sample.net.openthread.ftd.coap.server ./zephyr/samples/net/openthread/coap/
 ```
 **Note:** Modify the board name as per the requirements
 2. The openthread coap application is built with default configuration as in [prj.cnf](https://github.com/zephyrproject-rtos/zephyr/blob/main/samples/net/openthread/coap/prj.conf) file.
@@ -20,7 +20,7 @@ west flash
 
 1. To build openthread coap Client application, which is part of zephyr repo, use the below command,
 ```bash
-west build -p always -b wbz451_curiosity -T sample.net.openthread.ftd.coap.client ./zephyr/samples/net/openthread/coap/ "-DEXTRA_CONF_FILE=boards/wbz45x_curiosity.conf"
+west build -p always -b wbz451_curiosity -T sample.net.openthread.ftd.coap.client ./zephyr/samples/net/openthread/coap/
 ```
 **Note:** Modify the board name as per the requirements
 2. The openthread coap application is built with default configuration as in [prj.cnf](https://github.com/zephyrproject-rtos/zephyr/blob/main/samples/net/openthread/coap/prj.conf) file.

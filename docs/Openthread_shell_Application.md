@@ -105,12 +105,12 @@ CONFIG_LOG=y
 CONFIG_LOG_DEFAULT_LEVEL=3
 CONFIG_NET_LOG=y
 ```
-##### Configuring Openthread Shell Application for pic32wm_bz6204_curiosity
-BZ6 family of devices doesn't have Entropy driver support now. So, the software test random generator module is used as source for the driver. In order to enable it, use the following MACRO.
-##### Entropy Source
+##### Configuring Openthread Shell Application for wbz351_curiosity
+BZ3 family of devices - In zephyr Openthread number of message buffers configured as default 128 in Kconfig file, For RAM optimization for BZ3 device openthread number of message buffers reduced to 64 as reference of MH3 release, In order for wbz351 add the following MACRO for FTD role.  
+##### Number of message buffers for bz3 devices
 ```bash
-#Enable Test Random Generator
-CONFIG_TEST_RANDOM_GENERATOR=y
+#Number of message buffers
+CONFIG_OPENTHREAD_NUM_MESSAGE_BUFFERS=64
 ```
 #### Configuring Openthread Shell Application for pre-certification of Thread Version 1.4
 Following are the list of KCONFIG macros that can be modified to run pre-certification test case in [prj.cnf](https://github.com/zephyrproject-rtos/zephyr/blob/main/samples/net/openthread/shell/prj.conf) file.
