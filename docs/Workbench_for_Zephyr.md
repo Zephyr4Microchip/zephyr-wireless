@@ -6,10 +6,11 @@
 2. [Software Setup](#step2)
 3. [Getting Started with Workbench for Zephyr](#step3)
 4. [Zephyr Environment Setup](#step4)
-5. [Importing Existing Application](#step5)
-6. [Building the Application](#step6)
-7. [Installing OpenOCD for Programming](#step7)
-8. [Flashing the Application](#step8)
+5. [Install Device Libraries](#step5)
+6. [Install OpenOCD for Programming](#step6)
+7. [Import Existing Application](#step7)
+8. [Build the Application](#step8)
+9. [Flash the Application](#step9)
 
 
 ## 1. Introduction<a name="step1">
@@ -30,7 +31,7 @@ This guide will walk you through the essential steps to get started with Zephyr,
 
 ### Install Extension: Workbench for Zephyr
 
-**Step 1** - After installing [Visual Studio Code](https://code.visualstudio.com/) search for "Workbench for Zephyr" in extension and install it as shown below.
+**Step 1** - After installing [Visual Studio Code](https://code.visualstudio.com/) search for "Workbench for Zephyr" in extension, click on dropdown of install and select "Install Pre-Release Version" as shown below.
 
 ![](Workbench_images/extension.png)
 
@@ -73,13 +74,12 @@ This guide will walk you through the essential steps to get started with Zephyr,
 
 **Step 2** - Refer the below images for configuring in the Create west workspace window.
 
-- Select "Repository" for source location and copy paste the path as shown below.
+- Select "Repository" for source location and copy paste the below path.
 
   ```
   https://github.com/Zephyr4Microchip/zephyr.git
 
   ```
-![](Workbench_images/west_workspaces_config.png)
 
 - Refresh and choose the revision as
   ```
@@ -91,11 +91,15 @@ This guide will walk you through the essential steps to get started with Zephyr,
   c:\developers\zephyrproject_wsg
   ```
 
-![](Workbench_images/west_workspaces_config_2.png)
+- Expand the "Advanced options" and uncheck "Fetch west blobs".
+
+- Remove the "zephyrproject" in Subfolder and verify the below screen capture before hitting Import.
+
+![](Workbench_images/west_workspaces_config.png)
 
 - Then click on Import.
 
-- Once the installation completes the terminal prints the below status.
+- Once the installation completes, workspace will be available in "WEST WORKSPACES" as below.
 
 ![](Workbench_images/west_workspaces_installed.png)
 
@@ -121,93 +125,95 @@ This guide will walk you through the essential steps to get started with Zephyr,
 
 - Then click on Import.
 
-## 5. Importing Existing Application<a name="step5">
+**Step 2** - Verify that the Toolchain is installed properly if its listed in TOOLCHAINS as shown below.
 
-**Step 1** - Go to APPLICATIONS Tab and click on "Import Existing Application"
+![](Workbench_images/toolchain_installed.png)
 
-![](Workbench_images/import_application.png)
+## 5. Install Device Libraries<a name="step5">
 
-**Step 2** - Click on Folder icon & Choose the Sample Project as Shown below.
+**Step 1** - Right click the workspace (zephyrproject_wsg) in WEST WORKSPACES as shown below.
 
-![](Workbench_images/import_application_1.png)
+![](Workbench_images/west_blobs.png)
 
-**Step 3** - Select the west workspace
-
-![](Workbench_images/import_application_2.png)
-
-**Step 4** - Select the toolchain (SDK Latest version : 0.17.4)
-
-![](Workbench_images/import_application_3.png)
-
-**Step 5** - Select the target board
-
-![](Workbench_images/import_application_4.png)
-
-**Step 5** - The Project will be added to the APPLICATIONS tab as shown below.
-
-![](Workbench_images/import_application_5.png)
-
-
-## 6. Building the Application<a name="step6">
-
-- Click on Build icon as shown in the below image and then your application will be build successfully.
-
-![](Workbench_images/Build.png)
-
-- Before building any Wireless Applications, download the required libraries using below steps.
-
-  - **Step 1** - Right click the workspace (zephyrproject_wsg) in WEST WORKSPACES as shown below.
-
-    ![](Workbench_images/west_blobs.png)
-
-  - **Step 2** - A new Terminal window would open. Enter the below command as shown.
+**Step 2** - A new Terminal window would open and enter the below command to download the Device Libraries.
      ~~~
      west blobs fetch hal_microchip
      ~~~
 
-    ![](Workbench_images/west_blobs1.png)
+![](Workbench_images/west_blobs1.png)
 
+## 6. Installing OpenOCD for Programming<a name="step6">
 
-## 7. Installing OpenOCD for Programming<a name="step7">
+### Install Custom OpenOCD support
 
-| ⚠ Warning : Connect your target board to your PC before running the script|
+| ✅ Note : As support for these devices has not yet been merged into the OpenOCD mainline, the following step is currently required|
 | :-|
 
-- Copy & paste the python script "installOpenOCD_WSG_BZx.py" in the [Workbench_images](Workbench_images/installOpenOCD_WSG_BZx.py) folder to the below mentioned folder.
+- Download the python scripts "installOpenOCD_WSG_BZx.py" and "switchFirmware.py" from the [Workbench_images](Workbench_images/) folder to the below mentioned folder.
 
   ```
   c:\developers\zephyrproject_wsg
 
   ```
-- Run the Python script as shown below.
+- Click Terminal and select "New Terminal" as shown below.
 
-- After running the script
-  - Choose 1 for changing the Default MPLAB PKOB4 to OpenOCD CMSIS-DAP.
-  - Choose 2 for changing the OpenOCD CMSIS-DAP to Default MPLAB PKOB4.
+![](Workbench_images/install_openocd.png)
 
-  | ⚠ Warning : **Important Note: Select 2 and switch the firmware back to PKOB4 before using with MPLABX IDE/IPE. This selection decides whether the board works for OpenOCD or MPLABx.|
-  | :-|
+- Run the install script to set up OpenOCD and its dependencies as shown below.
 
-![](Workbench_images/installOpenOCD_WSG_BZx_1.png)
+  ```
+  python installOpenOCD_WSG_BZx.py
+  ```
 
-![](Workbench_images/installOpenOCD_WSG_BZx_2.png)
+![](Workbench_images/installOpenOCD_WSG_BZx.png)
 
-![](Workbench_images/installOpenOCD_WSG_BZx_3.png)
+### Switching Programmer between Zephyr and MPLABx
 
-- Finally the python script will successfully switch to OpenOCD CMSIS-DAP firmware.
+| ⚠ **Warning** |
+| :- |
+| - Connect your target board to your PC before running the below script.<br>- Zephyr uses **CMSIS mode**, while **MPLAB X IPE** uses **PKOB mode** of the programmer/debugger.<br>- Default configuration of fresh board is PKOB mode to support MPLABx |
 
-## 8. Flashing the Application<a name="step8">
+To switch programmer at any time after the initial setup, run the standalone switcher script.
 
-| ⚠ Warning : For PIC32CXBZ6 copy and paste (overwrite) the python script "gen_signed_hex.py" in the [Workbench_images](Workbench_images/gen_signed_hex.py) folder to  "C:\developers\zephyrproject_wsg\zephyr\soc\microchip\pic32c\pic32cx_bz\bz6x\gen_signed_hex.py" folder.|
+	```
+	python switchFirmware.py
+	```
+
+- Choose **1** (or **zephyr**) to switch to OpenOCD CMSIS-DAP programmer (for Zephyr development).
+- Choose **2** (or **mplab**) to switch back to the default MPLAB PKOB4 programmer.
+
+| ⚠ Warning : Always switch back to MPLAB PKOB4 (option 2) before using the board with MPLABX IDE/IPE.|
 | :-|
 
-- Click on Run icon as shown in the below image and then choose the "--runner openocd" for flashing the project.
+- Type **1** (or **zephyr**) to switch to CMSIS-DAP mode as shown below.
 
-![](Workbench_images/Flashing.png)
+![](Workbench_images/switchFirmware.png)
+
+## 7. Import Existing Application<a name="step7">
+
+**Step 1** - Go to APPLICATIONS Tab and click on "Add Application" as shown below.
+
+![](Workbench_images/add_application.png)
+
+**Step 2** - Select the West Workspace, Toolchain, Board, Import exisiting application, Project Location as shown below and click on Create.
+
+![](Workbench_images/add_application1.png)
+
+## 8. Build the Application<a name="step8">
+
+- Click on Build icon as shown in the below image and then your application will be built successfully.
+
+![](Workbench_images/build_app.png)
+
+## 9. Flash the Application<a name="step9">
+
+- Click on Flash icon as shown in the below image and then choose the "openocd" for flashing the project.
+
+![](Workbench_images/flash_app.png)
 
 - After Successful Flashing your terminal log look as below.
 
-![](Workbench_images/Flashing_completed.png)
+![](Workbench_images/flash_app_completed.png)
 
 - Now you can see the application running in the target board.
 
