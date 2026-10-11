@@ -91,9 +91,9 @@ This guide will walk you through the essential steps to get started with Zephyr,
   c:\developers\zephyrproject_wsg
   ```
 
-- Expand the "Advanced options" and uncheck "Fetch west blobs".
+- **⚠️ IMPORTANT: Expand the "Advanced options" and uncheck "Fetch west blobs"**, to avoid large downloads of all vendor libraries.
 
-- Remove the "zephyrproject" in Subfolder and verify the below screen capture before hitting Import.
+- **⚠️ IMPORTANT: Remove the "zephyrproject" in Subfolder** and verify the below screen capture before hitting Import.
 
 ![](Workbench_images/west_workspaces_config.png)
 
@@ -136,9 +136,9 @@ This guide will walk you through the essential steps to get started with Zephyr,
 ![](Workbench_images/west_blobs.png)
 
 **Step 2** - A new Terminal window would open and enter the below command to download the Device Libraries.
-     ~~~
-     west blobs fetch hal_microchip
-     ~~~
+  ~~~
+  west blobs fetch hal_microchip
+  ~~~
 
 ![](Workbench_images/west_blobs1.png)
 
@@ -149,7 +149,7 @@ This guide will walk you through the essential steps to get started with Zephyr,
 | ✅ Note : As support for these devices has not yet been merged into the OpenOCD mainline, the following step is currently required|
 | :-|
 
-- Download the python scripts "installOpenOCD_WSG_BZx.py" and "switchFirmware.py" from the [Workbench_images](Workbench_images/) folder to the below mentioned folder.
+- Right click and select **Save link as...** to download the python scripts "[installOpenOCD_WSG_BZx.py](https://github.com/Zephyr4Microchip/zephyr-wireless/blob/mchp_pic32cxbz_v420_v1.2/docs/Workbench_images/installOpenOCD_WSG_BZx.py)" and "[switchFirmware.py](https://github.com/Zephyr4Microchip/zephyr-wireless/blob/mchp_pic32cxbz_v420_v1.2/docs/Workbench_images/switchFirmware.py)" to the below folder.
 
   ```
   c:\developers\zephyrproject_wsg
@@ -172,6 +172,10 @@ This guide will walk you through the essential steps to get started with Zephyr,
 | ⚠ **Warning** |
 | :- |
 | - Connect your target board to your PC before running the below script.<br>- Zephyr uses **CMSIS mode**, while **MPLAB X IPE** uses **PKOB mode** of the programmer/debugger.<br>- Default configuration of fresh board is PKOB mode to support MPLABx |
+
+| ⚠ **Warning** |
+| :- |
+| **Connect only one target board to your system when switching to CMSIS firmware.** Connecting multiple boards may cause the wrong device to be selected.|
 
 To switch programmer at any time after the initial setup, run the standalone switcher script.
 
@@ -206,6 +210,10 @@ To switch programmer at any time after the initial setup, run the standalone swi
 ![](Workbench_images/build_app.png)
 
 ## 9. Flash the Application<a name="step9">
+
+| ⚠ **Warning** |
+| :- |
+| **Connect only one target board to your system when switching to CMSIS firmware.** Connecting multiple boards may cause the wrong device to be selected.|
 
 - Click on Flash icon as shown in the below image and then choose the "openocd" for flashing the project.
 
