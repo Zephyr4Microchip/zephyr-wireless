@@ -11,10 +11,11 @@ Microchip Wireless Solutions repository to get started with Bluetooth Low Energy
 ## 1. List of boards supported<a name="step1">
 |Board Name| Zephyr Board Name|
 | :- | :- |
+|[PIC32CX BZ3 and WBZ35x Curiosity Board](https://www.microchip.com/en-us/development-tool/ev19j06a) |wbz351_curiosity|
 |[PIC32CX-BZ2 and WBZ451 Curiosity Development Board](https://www.microchip.com/en-us/development-tool/ev96b94a) |wbz451_curiosity|
 |[WBZ451HPE Curiosity Board](https://www.microchip.com/en-us/development-tool/ev79y91a) |wbz451hpe_curiosity|
 |[PIC32CX-BZ2 and WBZ450 Curiosity Development Board](https://www.microchip.com/en-us/development-tool/EV22L65A) |wbz450_curiosity|
-|[PIC32-BZ6 Early Access Curiosity Board](https://www.microchip.com/en-us/development-tool/ea81w68a) |pic32wm_bz6204_curiosity|
+|[PIC32 BZ6 Curiosity Board](https://www.microchip.com/en-us/development-tool/ev31u42a) |pic32wm_bz6204_curiosity|
 
 ## 2. Environment Setup<a name="step2">
 

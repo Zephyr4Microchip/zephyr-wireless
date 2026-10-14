@@ -9,25 +9,46 @@ import time
 import struct
 
 if __name__ == "__main__":
-    # Get user input for IDE selection
-    print("Select IDE environment:")
-    print("1. zephyr (uses pkob4_app_cmsis-dap.hex)")
-    print("2. mplab (uses pkob4_app.hex)")
-    
-    ide_choice = input("Enter choice (1/2 or zephyr/mplab) or press Enter for zephyr: ").strip().lower()
-    
-    # Handle both numeric and text input
-    if ide_choice == "1" or ide_choice == "zephyr":
-        ide_choice = "zephyr"
-    elif ide_choice == "2" or ide_choice == "mplab":
-        ide_choice = "mplab"
-    else:
-        ide_choice = "zephyr"  # default
-    
-    print(f"Selected: {ide_choice}")
-    
     repo_url = "https://github.com/MicrochipTech/openOCD-wireless.git"
     repo_dir = "OpenOCD_WSG_BZx"
+
+    # Early check: determine if environment is already fully set up
+    def get_openocd_dest():
+        zi_tools_dir = os.environ.get("ZI_TOOLS_DIR")
+        if not zi_tools_dir:
+            user_home = os.path.expanduser("~")
+            zi_tools_dir = os.path.join(user_home, ".zinstaller", "tools")
+        if not os.path.exists(zi_tools_dir):
+            return None
+        new_dest = os.path.join(zi_tools_dir, "openocds", "openocd-zephyr")
+        legacy_dest = os.path.join(zi_tools_dir, "openocd")
+        if os.path.exists(new_dest) or os.path.isdir(os.path.join(zi_tools_dir, "openocds")):
+            return new_dest
+        elif os.path.exists(legacy_dest):
+            return legacy_dest
+        return new_dest
+
+    def is_environment_ready():
+        openocd_dest = get_openocd_dest()
+        if not openocd_dest:
+            return False
+        wbz451_cfg = os.path.join(openocd_dest, "share", "openocd", "scripts", "target", "wbz451.cfg")
+        if not os.path.exists(wbz451_cfg):
+            return False
+        try:
+            import pycmsisdapswitcher
+            import usb
+            import usb.backend.libusb1 as libusb1_backend
+            if libusb1_backend.get_backend() is None:
+                return False
+        except Exception:
+            return False
+        return True
+
+    if is_environment_ready():
+        print("✓ Environment is already set up (OpenOCD, dependencies, and libusb backend all present).")
+        print("  Run switchFirmware.py to switch between CMSIS-DAP and MPLAB firmware.")
+        sys.exit(0)
 
     # Check if required folders already exist
     dst1 = os.path.join(repo_dir, "pkob4-cmsis_dap-switcher")
@@ -82,8 +103,11 @@ if __name__ == "__main__":
                 else:
                     print(f"⚠ wbz451.cfg not found, overwriting openocd...")
                     if os.path.exists(openocd_dest):
-                        print(f"Removing existing openocd at {openocd_dest}...")
-                        shutil.rmtree(openocd_dest)
+                        old_dest = openocd_dest + "_old"
+                        if os.path.exists(old_dest):
+                            shutil.rmtree(old_dest)
+                        print(f"Renaming existing openocd to {old_dest}...")
+                        os.rename(openocd_dest, old_dest)
 
                     os.makedirs(os.path.dirname(openocd_dest), exist_ok=True)
                     print(f"Copying {openocd_src} to {openocd_dest}...")
@@ -246,60 +270,10 @@ if __name__ == "__main__":
     else:
         print("✓ libusb backend is already available")
 
-    # Prepare environment to use bundled libusb from pip package
-    print("\nPreparing environment with pip-installed libusb...")
-    env = os.environ.copy()
-    
-    # Search for libusb DLL in site-packages
-    try:
-        import site
-        found_dll = None
-        search_names = ['libusb-1.0.dll', 'libusb1.dll']
-        
-        for sp in site.getsitepackages():
-            print(f"Searching in {sp}...")
-            for root, dirs, files in os.walk(sp):
-                for name in files:
-                    if name.lower() in search_names:
-                        found_dll = os.path.join(root, name)
-                        print(f"✓ Found: {found_dll}")
-                        break
-                if found_dll:
-                    break
-            if found_dll:
-                break
-        
-        if found_dll:
-            dll_dir = os.path.dirname(found_dll)
-            env["PATH"] = dll_dir + os.pathsep + env.get("PATH", "")
-            print(f"✓ Added to PATH: {dll_dir}")
-        else:
-            print("⚠ Warning: Could not find libusb DLL in site-packages")
-    except Exception as e:
-        print(f"⚠ Error searching for libusb DLL: {e}")
-
-    # Run the CMSIS-DAP switcher
-    if ide_choice == "zephyr":
-        source_path = os.path.join(repo_dir, "pkob4-cmsis_dap-switcher", "pkob4_app_cmsis-dap.hex")
-        fwtype = "cmsis"
-        switcher_desc = "Zephyr CMSIS-DAP"
-    else:  # mplab
-        source_path = os.path.join(repo_dir, "pkob4-cmsis_dap-switcher", "pkob4_app.hex")
-        fwtype = "mplab"
-        switcher_desc = "MPLAB"
-    
-    if os.path.exists(source_path):
-        print(f"\nSwitching to {switcher_desc} firmware...")
-        print(f"Source: {source_path}")
-        cmd = [sys.executable, "-m", "pycmsisdapswitcher", "--action", "switch", "--target=evalboard", 
-               f"--source={source_path}", f"--fwtype={fwtype}"]
-        print(f"Command: {' '.join(cmd)}")
-        proc = subprocess.run(cmd, env=env)
-        if proc.returncode != 0:
-            py_dir = os.path.dirname(sys.executable)
-            print(f"⚠ Failed to switch to {switcher_desc} firmware!")
-        else:
-            print(f"✓ Successfully switched to {switcher_desc} firmware!")
-    else:
-        print(f"Source file not found: {source_path}")
+    # Inform user about the firmware switcher
+    print("\n✓ Installation complete!")
+    print("\nTo switch firmware between CMSIS-DAP and MPLAB, run:")
+    print(f"  python switchFirmware.py")
+    print("\n  Option 1 (zephyr) - Switch to OpenOCD CMSIS-DAP for Zephyr development")
+    print("  Option 2 (mplab)  - Switch back to default MPLAB PKOB4 for MPLABX IDE/IPE")
 
